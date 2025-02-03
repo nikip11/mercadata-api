@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    tty: true
+    container_name: app_py
+    volumes:
+      - ./app:/app:cached
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
