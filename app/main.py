@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI, UploadFile
+from models.invoice import get_invoices, add_invoice
 from utils.pdf import extract_table_from_pdf
 from fastapi.responses import JSONResponse
 
@@ -22,8 +23,17 @@ async def extract_table(file: UploadFile):
         with open(file_location, "wb") as f:
             f.write(await file.read())
 
-        table = extract_table_from_pdf(file_location)
-        
-        return JSONResponse(content={"status": "success", "data": table})
+        invoice = extract_table_from_pdf(file_location)
+        i = await add_invoice(invoice)
+        return JSONResponse(content={"status": "success", "data": i})
+    except Exception as e:
+        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+@app.get("/invoices")
+async def get_invoices_all():
+    try:
+        invoices = await get_invoices()
+        # return invoices
+        return JSONResponse(content={"status": "success", "data": invoices})
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)

@@ -26,7 +26,6 @@ def extract_table_from_pdf(pdf_path):
     total = 0
     
     for line in lines:
-        # print("=>", line)
         pattern = r"^(\d+)\s*([A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s\./%&\+\-]+)(?:\s*([\d,]+)\s*kg)?(?:\s*([\d,]+) €/kg)?(?:\s+([\d,]+))?(?:\s+([\d,]+))?$"
         match = re.search(pattern, line.strip())
         
@@ -43,8 +42,6 @@ def extract_table_from_pdf(pdf_path):
                 total = total + float(precio_total.replace(",", "."))
         else:
             print("=> match fail", line)
-    print('=== total ===========================')
-    print(total, total_ticket)
     return {'products': products, 'ticket_date': ticket_date, 'total': total_ticket, 'totalCalc': total, 'invoiceId': factura_id}
 
 def get_lines(text):

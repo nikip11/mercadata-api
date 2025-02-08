@@ -1,1 +1,8 @@
 .DS_Store
+__pycache__
+*.pyc
+
+# si usan vscode o pycharm agregar
+.vscode
+.idea
+.data/
