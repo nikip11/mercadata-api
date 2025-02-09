@@ -1,0 +1,7 @@
+services:
+  - type: web
+    runtime: docker
+    name: app
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
