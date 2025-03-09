@@ -57,19 +57,6 @@ async def read_mails():
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
-
-#     obtener_adjuntos_y_enviar()
-
-# @app.post("/procesar_correos/")
-# def procesar(subject: str):
-#     """Endpoint para buscar correos con un asunto específico y enviar los adjuntos."""
-#     try:
-#         archivos = procesar_correos(subject)
-#         return {"mensaje": "Proceso completado", "archivos_enviados": archivos}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
 @app.get("/api/product/{product_name}")
 async def search_product(product_name: str):
     try:
