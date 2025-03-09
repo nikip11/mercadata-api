@@ -25,5 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 EXPOSE 80
 # Comando para ejecutar FastAPI con Uvicorn
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port"]
+CMD ["8000"]
 
