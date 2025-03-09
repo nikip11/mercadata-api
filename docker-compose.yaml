@@ -7,8 +7,8 @@ services:
       - ./app:/app:cached
     working_dir: /app
     ports:
-      - "8888:80"
+      - "8888:8000"
     expose:
       - 8888
-    environment:
-      - DB_URL=DB_URL_MERCADATA
+    env_file:
+      - .env
