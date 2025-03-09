@@ -5,3 +5,14 @@ pydantic>=2.7.0,<3.0.0
 
 motor
 pydantic[email]
+
+# imapclient
+# email 
+# requests
+
+
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+requests

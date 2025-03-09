@@ -37,7 +37,7 @@ def extract_table_from_pdf(pdf_path):
             precio_por_kg = match.group(4) if match.group(4) else "N/A"
             precio_total = match.group(6) if match.group(6) else precio_unitario
 
-            products.append({"cantidad": cantidad, "producto": producto, "precioPorKg": precio_por_kg, "peso": peso, "precio": precio_total})
+            products.append({"cantidad": cantidad, "producto": producto, "unitPrice": precio_unitario,"precioPorKg": precio_por_kg, "peso": peso, "precio": precio_total})
             if precio_total:
                 total = total + float(precio_total.replace(",", "."))
         else:

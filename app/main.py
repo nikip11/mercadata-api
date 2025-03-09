@@ -1,16 +1,26 @@
 
-from fastapi import FastAPI, UploadFile
-from models.invoice import get_invoices, add_invoice
+from fastapi import FastAPI, UploadFile, HTTPException
+from models.invoice import get_tickets, add_invoice, get_tickets_byDate, get_last_price_of_product
 from utils.pdf import extract_table_from_pdf
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+# from utils.gmail import obtener_adjuntos_y_enviar
 
 app = FastAPI()
 
-@app.get("/")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/api/")
 async def root():
     return {"message": "¡Hola, Docker con FastAPI y Hot Reload!"}
 
-@app.post("/get-ticket/")
+@app.post("/api/get-ticket/")
 async def extract_table(file: UploadFile):
     """
     Endpoint para extraer la tabla de un archivo PDF subido.
@@ -29,11 +39,51 @@ async def extract_table(file: UploadFile):
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
-@app.get("/invoices")
-async def get_invoices_all():
+@app.get("/api/tickets/")
+async def get_tickets_all(min = None, max = None):
     try:
-        invoices = await get_invoices()
-        # return invoices
-        return JSONResponse(content={"status": "success", "data": invoices})
+        if not min or not max:
+            tickets = await get_tickets()
+        else:
+            tickets = await get_tickets_byDate(min, max)
+        return JSONResponse(content={"status": "success", "data": tickets})
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+@app.get("/api/mails")
+async def read_mails():
+    try:
+        return JSONResponse(content={"status": "success"}, status_code=200)
+    except Exception as e:
+        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+
+#     obtener_adjuntos_y_enviar()
+
+# @app.post("/procesar_correos/")
+# def procesar(subject: str):
+#     """Endpoint para buscar correos con un asunto específico y enviar los adjuntos."""
+#     try:
+#         archivos = procesar_correos(subject)
+#         return {"mensaje": "Proceso completado", "archivos_enviados": archivos}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/product/{product_name}")
+async def search_product(product_name: str):
+    try:
+        print(product_name)
+        results = await get_last_price_of_product(product_name)
+        print(results)
+        if not results:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+        
+        # 🧪 Formatear fecha a ISO string
+        for r in results:
+            # if isinstance(r["last_date"], datetime):
+            r["last_date"] = r["last_date"].isoformat()
+
+        return JSONResponse(content={"status": "success", "data": results})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al buscar el producto: {str(e)}")
