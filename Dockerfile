@@ -23,4 +23,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./app .
 
 # Comando para ejecutar FastAPI con Uvicorn
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
