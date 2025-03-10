@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
+    build: .
     tty: true
     container_name: app_py
     volumes:
