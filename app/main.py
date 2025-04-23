@@ -50,12 +50,12 @@ async def get_tickets_all(min = None, max = None):
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
-@app.get("/api/mails")
-async def read_mails():
-    try:
-        return JSONResponse(content={"status": "success"}, status_code=200)
-    except Exception as e:
-        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+# @app.get("/api/mails")
+# async def read_mails():
+#     try:
+#         return JSONResponse(content={"status": "success"}, status_code=200)
+#     except Exception as e:
+#         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
 @app.get("/api/product/{product_name}")
 async def search_product(product_name: str):
