@@ -12,6 +12,10 @@ services:
       - .env
     environment:
       - DB_URL_MERCADATA=${DB_URL_MERCADATA}
+    networks:
+      - proxy
+    depends_on:
+      - mongodb
 
   mongodb:
     image: mongo:latest
@@ -21,6 +25,12 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: always
+    networks:
+      - proxy
 
 volumes:
   mongodb_data:
+
+networks:
+  proxy:
+    external: true
