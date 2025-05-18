@@ -16,6 +16,7 @@ jobs:
       VIRTUAL_PORT: ${{ vars.VIRTUAL_PORT }}
       SECRET_KEY: ${{ vars.SECRET_KEY || 'defaultsecretkey1234567890' }}
       FRONTEND_URLS: ${{ vars.FRONTEND_URL }}
+      DB_URL_MERCADATA: ${{ vars.DB_URL_MERCADATA}}
 
     steps:
       - name: Checkout Repository
