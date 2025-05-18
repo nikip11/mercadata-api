@@ -1,7 +1,7 @@
 build:
-	docker-compose up --build --remove-orphans
+	docker-compose -f docker-compose.dev.yaml up --build --remove-orphans
 up:
-	docker-compose up --remove-orphans
+	docker-compose -f docker-compose.dev.yaml up --remove-orphans
 sh:
 	docker-compose run app sh
 
