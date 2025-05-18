@@ -1,0 +1,43 @@
+name: Deploy on Local Cloud
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    environment: production
+    env:
+      COMPOSE_PROJECT_NAME: mercadata-api
+      VIRTUAL_HOST: ${{ vars.VIRTUAL_HOST }}
+      VIRTUAL_PORT: ${{ vars.VIRTUAL_PORT }}
+      SECRET_KEY: ${{ vars.SECRET_KEY || 'defaultsecretkey1234567890' }}
+      FRONTEND_URLS: ${{ vars.FRONTEND_URL }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Debug Environment Variables
+        run: |
+          echo "DATABASE_URL structure: $(echo $DATABASE_URL | sed 's/:.*/:****@/')" 
+          echo "DB hostname connectivity test:"
+          getent hosts db || echo "DB host not found in DNS"
+
+      - name: Shut Down Existing Containers
+        run: docker compose down
+
+      - name: Build and Start Containers
+        run: docker compose up -d --build
+
+      - name: Wait for containers to be ready
+        run: sleep 10
+
+      - name: Check if containers are running
+        run: docker compose ps
+
+      - name: Check container logs
+        run: docker compose logs

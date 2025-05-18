@@ -4,13 +4,16 @@ from utils.pdf import extract_table_from_pdf
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
+import os
 # from utils.gmail import obtener_adjuntos_y_enviar
 
 app = FastAPI()
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -49,13 +52,6 @@ async def get_tickets_all(min = None, max = None):
         return JSONResponse(content={"status": "success", "data": tickets})
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
-
-# @app.get("/api/mails")
-# async def read_mails():
-#     try:
-#         return JSONResponse(content={"status": "success"}, status_code=200)
-#     except Exception as e:
-#         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
 @app.get("/api/product/{product_name}")
 async def search_product(product_name: str):
