@@ -21,3 +21,6 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: always
+
+volumes:
+  mongodb_data:
