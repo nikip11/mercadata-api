@@ -10,6 +10,10 @@ services:
       - .env
     environment:
       - DB_URL_MERCADATA=${DB_URL_MERCADATA}
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - VIRTUAL_PORT=${VIRTUAL_PORT}
+      - SECRET_KEY=${SECRET_KEY}
+      - FRONTEND_URL=${FRONTEND_URL}
     networks:
       - proxy
     depends_on:
