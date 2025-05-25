@@ -128,7 +128,7 @@ async def get_top_consumed_products(limit: int = 10):
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
-@app.get("/api/invoices/latest")
+@app.get("/api/tickets/latest")
 async def get_latest_invoices_endpoint(limit: int = 6):
     '''
     Endpoint que devuelve las facturas más recientes
